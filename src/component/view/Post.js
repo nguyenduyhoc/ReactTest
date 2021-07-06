@@ -1,43 +1,48 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deletePost, getPostAction } from "../../redux/Actions/PostAction";
-import Comment from "./Comment";
+import Pagination from "react-js-pagination";
+import PostList from "./PostList";
 
 export default function Post() {
-  // Get all post
-  const { allPost } = useSelector((state) => state.PostReducer);
   const dispatch = useDispatch();
 
+  // Get all post
+  const { allPost } = useSelector((state) => state.PostReducer);
+  //Paginatiopn
+  // const [state, setState] = useState({
+  //   activePage: 1,
+  // });
+
+  // const handlePageChange = (pageNumber) => {
+  //   const newState = { activePage: pageNumber };
+  //   setState(newState);
+  // };
   useEffect(() => {
     dispatch(getPostAction());
-  }, []);
+  }, [dispatch]);
   //   console.log(allPost);
 
-  const renderPost = () => {
-    return allPost.map((post) => {
-      return (
-        <div className="card mt-5" key={post.id}>
-          <h3>Id: {post.userId} </h3>
-          <div className="card-body">
-            <h4 className="card-title">Title: {post.title}</h4>
-            <p className="card-text">Body: {post.body}</p>
-            <button
-              className="btn btn-danger"
-              onClick={() => dispatch(deletePost(post.id))}
-            >
-              Delete Post
-            </button>
-            
-          </div>
-        </div>
-      );
-    });
-  };
   return (
     <div className="container">
-      {renderPost()}
-      <Comment allPost={allPost} />
-
+      {/* <Pagination
+        activePage={state.activePage}
+        itemsCountPerPage={1}
+        totalItemsCount={10}
+        pageRangeDisplayed={5}
+        onChange={handlePageChange.bind()}
+        itemClass="page-item"
+        linkClass="page-link"
+      /> */}
+      {allPost.map((post) => (
+        <PostList
+          key={post.id}
+          id={post.id}
+          userId={post.userId}
+          title={post.title}
+          body={post.body}
+        />
+      ))}
     </div>
   );
 }

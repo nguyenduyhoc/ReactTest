@@ -12,6 +12,7 @@ export const PostReducer = (state = initialState, action) => {
       if (index !== -1) {
         newAllPost.splice(index, 1);
       }
+      // console.log(newAllPost)
       state.allPost = newAllPost;
       return { ...state };
     }
